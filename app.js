@@ -3,6 +3,7 @@ import { listarAluno, inserirCurso } from "./cursoRepository.js"
 import express from 'express'
 const api = express();
 api.use(express.json());
+// teste
 
 
 // Primeira API
