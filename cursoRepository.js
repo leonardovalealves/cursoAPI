@@ -6,23 +6,115 @@ export async function listarAluno(registros) {
   const [linhas] = await registros.query(comando)
   return linhas
 }
+export async function filtrarPorNome(nome) {  //FILTRAR!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const comando = `
+    SELECT * 
+      FROM alunoss
+     WHERE nm_aluno like ?
+  `
+  let [registros] = await connection.query(comando, ['%'+nome+'%']);
+  return registros;
+}
+export async function consultarAluno(id) {     //CONSULTAR ID!!!!!!!!!!!!!!!!!!!!!!!!!
+  const comando = `
+    SELECT * 
+      FROM alunoss
+     WHERE id = ?
+  `
+  let [registros] = await connection.query(comando, [id]);
+  return registros[0];
+}
 export async function inserirAluno(novoAluno) {
   const comando = `
     INSERT INTO alunoss (nm_aluno, bt_matricula, nm_curso, nn_email) values (?, ?, ?, ?)`
   let [aluninho] = await connection.query(comando, [novoAluno.nm_aluno, novoAluno.bt_matricula, novoAluno.nm_curso, novoAluno.nn_email])
   return aluninho.insertId;
 }
+export async function alterarAluno(id, novosDados) {   //ALTERAR INFORMAÇÕES!!!!!!!!!!!!!!!!!!!!!!!
+  const comando = `
+    UPDATE alunoss
+       SET nm_aluno = ?,
+           bt_matricula = ?,
+           nm_curso = ?,
+           nn_email = ?
+     WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [
+    novosDados.nm_aluno,
+    novosDados.bt_matricula,
+    novosDados.nm_curso,
+    novosDados.nn_email,
+    id
+  ])
+}
+export async function deletarAluno(id) {  //DELETAR ID !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const comando = `
+    DELETE FROM alunoss
+          WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [id]);
+}
+
+
 // Segunda API
 export async function listarEsporte(registros) {
-  const comando = 'SELECT * FROM  esportes'
+  const comando = 'SELECT * FROM  esporte'
   const [show] = await registros.query(comando)
   return show
+}
+export async function filtrarPorNome(nome) {
+  const comando = 'SELECT * FROM esporte WHERE nm_esporte like ?'
+  let [registros] = await connection.query(comando, ['%'+nome+'%']);
+  return registros;
+}
+export async function consultarEsporte(id) {     
+  const comando = `SELECT * FROM esporte WHERE id = ?`
+  let [registros] = await connection.query(comando, [id]);
+  return registros[0];
 }
 export async function inserirEsporte(novoEsporte) {
   const comando =  'INSERT INTO esporte (nm_esporte, nm_melhor_jogador, bt_campeonato, bt_famoso, nmr_jogadores, regra_mais_importante, qunado_nasceu, pais_mais_jogado, tempo_partida, jogadores_partida) values (?,?,?,?,?,?,?,?,?,?)'
 let [esportinho] = await connection.query(comando, [novoEsporte.nm_esporte, novoEsporte.nm_melhor_jogador, novoEsporte.bt_campeonato, novoEsporte.bt_famoso, novoEsporte.nmr_jogadores, novoEsporte.regra_mais_importante, novoEsporte.qunado_nasceu, novoEsporte.pais_mais_jogado, novoEsporte.tempo_partida, novoEsporte.jogadores_partida])
 return esportinho
 }
+export async function alterarEsporte(id, novosDados) {  
+  const comando = `
+    UPDATE esporte
+       SET nm_esporte = ?,
+           nm_melhor_jogador = ?,
+           bt_campeonato = ?,
+           bt_famoso = ?,
+           nmr_jogadores = ?,
+           regra_mais_importante = ?,
+           qunado_nasceu = ?,
+           pais_mais_jogado = ?,
+           tempo_partida = ?,
+           jogadores_partida = ?
+     WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [
+    novosDados.nm_esporte,
+    novosDados.nm_melhor_jogador,
+    novosDados.bt_campeonato,
+    novosDados.bt_famoso,
+    novosDados.nmr_jogadores,
+    novosDados.regra_mais_importante,
+    novosDados.qunado_nasceu,
+    novosDados.pais_mais_jogado,
+    novosDados.tempo_partida,
+    novosDados.jogadores_partida,
+    id
+  ])
+}
+export async function deletarEsporte(id) {  
+  const comando = `
+    DELETE FROM esporte
+          WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [id]);
+}
+
+
 // terceira API
 export async function listarMotos(registros) {
   const comando = 'SELECT * FROM  trabalhos_motos'
@@ -34,6 +126,52 @@ export async function inserirMoto(novaMoto) {
   let [motinho] = await connection.query(comando, [novaMoto.placa_moto, novaMoto.modelo, novaMoto.descricao_trabalho, novaMoto.data_entrada, novaMoto.data_saida, novaMoto.status, novaMoto.valor])
   return motinho
 }
+export async function filtrarPorNome(nome) {
+  const comando = `
+    SELECT * 
+      FROM trabalhos_moto
+     WHERE nm_aluno like ?
+  `
+  let [registros] = await connection.query(comando, ['%'+nome+'%']);
+  return registros;
+}
+export async function consultarMoto(id) {     
+  const comando = `SELECT * FROM trabalhos_motos WHERE id = ?`
+  let [registros] = await connection.query(comando, [id]);
+  return registros[0];
+}
+export async function alterarMoto(id, novosDados) {  
+  const comando = `
+    UPDATE trabalhos_moto
+       SET placa_moto = ?,
+           modelo = ?,
+           descricao_trabalho = ?,
+           data_entrada = ?,
+           data_saida = ?,
+           status = ?,
+           valor = ?
+     WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [
+    novosDados.placa_moto,
+    novosDados.modelo,
+    novosDados.descricao_trabalho,
+    novosDados.data_entrada,
+    novosDados.data_saida,
+    novosDados.status,
+    novosDados.valor,
+    id
+  ])
+}
+export async function deletarMoto(id) {  
+  const comando = `
+    DELETE FROM trabalhos_moto
+          WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [id]);
+}
+
+
 // Quarta API
 export async function listarPizza(registros) {
   const comando = 'SELECT * FROM pizza'
@@ -44,6 +182,15 @@ export async function inserirPizza(novaPizza) {
   const comando = 'INSERT INTO pizza (nome, descricao, preco, tamanho, vegetariana, ingredientes, categoria) values (?,?,?,?,?,?,?)'
   let [pizzinha] = await connection.query(comando, [novaPizza.nome, novaPizza.descricao, novaPizza.preco, novaPizza.tamanho, novaPizza.vegetariana, novaPizza.ingredientes, novaPizza.categoria])
   return pizzinha
+}
+export async function filtrarPorNome(nome) {
+  const comando = `
+    SELECT * 
+      FROM pizza
+     WHERE nm_aluno like ?
+  `
+  let [registros] = await connection.query(comando, ['%'+nome+'%']);
+  return registros;
 }
 // Quinta API
 export async function listarFilmes(registros) {

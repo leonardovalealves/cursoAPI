@@ -1,14 +1,19 @@
-import { listarAluno, inserirCurso } from "./cursoRepository.js"
+import { listarAluno, inserirCurso, deletarAluno, consultarEsporte, deletarEsporte, alterarMoto } from "./cursoRepository.js"
 
 import express from 'express'
 const api = express();
 api.use(express.json());
-// teste
 
 
-// Primeira API
+// Primeira API ----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 api.get('/aluno', async (req, resp) => {
   let registros = await listarAluno();
+  resp.send(registros);
+})
+api.get('/aluno/filtrar', async (req, resp) => {
+  let nome = req.query.nome;
+  let registros = await filtrarPorNome(nome);
   resp.send(registros);
 })
 api.post('/aluno', async (req, resp) => {
@@ -18,10 +23,33 @@ api.post('/aluno', async (req, resp) => {
     novoId: id
   })
 })
-// Segunda API
+api.put('/aluno/:id', async (req, resp) => {
+  let id = req.params.id;
+  let novosDados = req.body;
+  await alterarAluno(id, novosDados);
+  resp.send();
+})
+api.delete('/aluno/:id', async (req, resp) => {
+  let id = req.params.id;
+  await deletarAluno(id);
+  resp.send();
+})
+
+// Segunda API -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 api.get('/esporte', async (req, resp) => {
   let registros = await listarEsporte();
   resp.send(registros)
+})
+api.get('/esporte/filtrar', async (req, resp) => {
+  let nome = req.query.nome;
+  let registros = await filtrarPorNome(nome);
+  resp.send(registros);
+})
+api.get('/esporte/:id', async (req, resp) => {
+  let id = req.params.id;
+  let registros = await consultarEsporte(id);
+  resp.send(registros);
 })
 api.post ('/eporte', async (req, resp) => {
   let novoEsporte = req.body;
@@ -30,19 +58,56 @@ api.post ('/eporte', async (req, resp) => {
     novoId: id
   })
 })
-//Terceira API
+api.put('/esporte/:id', async (req, resp) => {
+  let id = req.params.id;
+  let novosDados = req.body;
+  await alterarEsporte(id, novosDados);
+  resp.send();
+})
+api.delete('/esporte/:id', async (req, resp) => {
+   let id = req.params.id;
+  await deletarEsporte(id);
+  resp.send();
+})
+
+
+//Terceira API -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 api.get('/motos', async (req, resp) => {
   let registros = await listarMotos();
   resp.send(registros)
 })
-api.post('/esporte', async (req,resp) => {
+api.post('/motos', async (req,resp) => {
   let novaMoto = req.body;
   let id = await inserirMoto(novaMoto)
   resp.send({
     novoId: id
   })
 })
-// Quarta API
+api.get('/motos/filtrar', async (req, resp) => {
+  let nome = req.query.nome;
+  let registros = await filtrarPorNome(nome);
+  resp.send(registros);
+})
+api.get('/motos/:id', async (req, resp) => {
+  let id = req.params.id;
+  let registros = await consultarMoto (id);
+  resp.send(registros);
+})
+api.put('/motos/:id', async (req, resp) => {
+  let id = req.params.id;
+  let novosDados = req.body;
+  await alterarMoto(id, novosDados);
+  resp.send();
+})
+api.delete('/moto/:id', async (req, resp) => {
+   let id = req.params.id;
+  await deletarMoto(id);
+  resp.send();
+})
+
+// Quarta API ------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 api.get('/pizza', async (req, resp) => {
   let registros = await listarPizza()
   resp.send(registros)
@@ -53,6 +118,16 @@ let id = await inserirPizza(novaPizza)
 resp.send ({
   novoId: id
 })
+})
+api.get('/pizza/filtrar', async (req, resp) => {
+  let nome = req.query.nome;
+  let registros = await filtrarPorNome(nome);
+  resp.send(registros);
+})
+api.get('/aluno/:id', async (req, resp) => {
+  let id = req.params.id;
+  let registros = await consultarAluno(id);
+  resp.send(registros);
 })
 // Quinta API
 api.get ('/filmes', async (req, resp)=>{
