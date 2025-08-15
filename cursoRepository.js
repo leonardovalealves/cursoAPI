@@ -183,6 +183,15 @@ export async function inserirPizza(novaPizza) {
   let [pizzinha] = await connection.query(comando, [novaPizza.nome, novaPizza.descricao, novaPizza.preco, novaPizza.tamanho, novaPizza.vegetariana, novaPizza.ingredientes, novaPizza.categoria])
   return pizzinha
 }
+ export async function consultarPizza(id) {
+  const comando = `
+    SELECT * 
+      FROM pizza
+     WHERE id = ?
+  `
+  let [registros] = await connection.query(comando, [id]);
+  return registros[0];
+}
 export async function filtrarPorNome(nome) {
   const comando = `
     SELECT * 
@@ -192,6 +201,37 @@ export async function filtrarPorNome(nome) {
   let [registros] = await connection.query(comando, ['%'+nome+'%']);
   return registros;
 }
+export async function alterarPizza(id, novosDados) {
+  const comando = `
+    UPDATE pizza
+       SET nome = ?,
+       descricao = ?,
+        preco = ?,
+        tamanho = ?,
+        vegetariana = ?
+        ingredientes = ?,
+        categoria = ?
+     WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [
+    novosDados.nome,
+    novosDados.descricao,
+    novosDados.preco,
+    novosDados.tamanho,
+    novosDados.vegetariana,
+    novosDados.ingredientes,
+    novosDados.categoria,
+    id
+  ])
+}
+export async function deletarPizza(id) {
+  const comando = `
+    DELETE FROM pizza
+          WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [id]);
+}
+
 // Quinta API
 export async function listarFilmes(registros) {
   const comando = 'SELECT * FROM filmes'
@@ -202,6 +242,52 @@ export async function inserirFilme(novofilme) {
   const comando =   'INSERT INTO filmes (titulo, ano_lancamento, genero, duracao, diretor, avaliacao) values (?,?,?,?,?,?)'
   let [filminho] = await connection.query(comando, [novofilme.titulo, novofilme.ano_lancamento, novofilme.genero, novofilme.duracao, novofilme.diretor, novofilme.avaliacao])
   return filminho
+}
+ export async function consultarFilmes(id) {
+  const comando = `
+    SELECT * 
+      FROM filmess
+     WHERE id = ?
+  `
+  let [registros] = await connection.query(comando, [id]);
+  return registros[0];
+}
+export async function filtrarPorNome(nome) {
+  const comando = `
+    SELECT * 
+      FROM filmess
+     WHERE nome like ?
+  `
+  let [registros] = await connection.query(comando, ['%'+nome+'%']);
+  return registros;
+}
+export async function alterarFilmes(id, novosDados) {
+  const comando = `
+    UPDATE filmess
+       SET titulo = ?,
+       ano_lancamento = ?,
+        genero = ?,
+        duracao_minutos = ?,
+        diretor = ?,
+        avaliacao = ?
+     WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [
+    novosDados.titulo,
+    novosDados.ano_lancamento,
+    novosDados.genero,
+    novosDados.duracao_minutos,
+    novosDados.diretor,
+    novosDados.avaliacao,
+    id
+  ])
+}
+export async function deletarFilme(id) {
+  const comando = `
+    DELETE FROM Filmess
+          WHERE id = ?
+  `
+  let [info] = await connection.query(comando, [id]);
 }
 // Sexta API
 export async function listarSeries(registros) {
@@ -214,6 +300,52 @@ export async function inserirSerie(novaSerie){
   let [serizinha] = await connection.query(comando, [ novaSerie.titulo, novaSerie.ano_lancamento, novaSerie.genero, novaSerie.temporadas, novaSerie.criador, novaSerie.avaliacao])
   return serizinha
 }
+export async function consultarSeries(id) {
+    const comando = `
+      SELECT * 
+        FROM series
+       WHERE id = ?
+    `
+    let [registros] = await connection.query(comando, [id]);
+    return registros[0];
+  }
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM series
+       WHERE nome like ?
+    `
+    let [registros] = await connection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  export async function alterarSeries(id, novosDados) {
+    const comando = `
+      UPDATE series
+         SET titulo = ?,
+         ano_lancamento = ?,
+          genero = ?,
+          temporadas = ?,
+          criador = ?,
+          avaliacao = ?
+       WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [
+      novosDados.titulo,
+      novosDados.ano_lancamento,
+      novosDados.genero,
+      novosDados.temporadas,
+      novosDados.criador,
+      novosDados.avaliacao,
+      id
+    ])
+  }
+  export async function deletarSeries(id) {
+    const comando = `
+      DELETE FROM series
+            WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [id]);
+  }
 // Sétima API
 export async function listarLivro(registro) {
   const comando = 'SELECT * FROM livros'
@@ -223,7 +355,8 @@ export async function listarLivro(registro) {
 export async function inserirLivro(novoLivro) {
   const comando = 'INSERT INTO livros (titulo, autor, ano_publicacao, genero, editora, preco) values (?,?,?,?,?,?)'
   let [livrinho] = await connection.query(comando, [novoLivro.titulo, novoLivro.autor, novoLivro.ano_publicacao, novoLivro.genero, novoLivro.editora, novoLivro.preco])
-  return livrinho;
+  return livrinho
+  }
  export async function consultarLivros(id) {
     const comando = `
       SELECT * 
@@ -270,7 +403,6 @@ export async function inserirLivro(novoLivro) {
     `
     let [info] = await connection.query(comando, [id]);
   }
-}
 // Oitava API
 export async function listarCarros(registro) {
   const comando = 'SELECT * FROM carros1'
@@ -282,6 +414,52 @@ const comando = 'INSERT INTO carros1 (valor, placa, modelo, ano_fabricacao, cor,
 let [carrinho] = await connection.query(comando, [novoCarro.valor, novoCarro.placa, novoCarro.modelo, novoCarro.ano_fabricacao, novoCarro.cor, novoCarro.ar_condionado])
 return carrinho
 }
+export async function consultarCarros(id) {
+    const comando = `
+      SELECT * 
+        FROM carros1
+       WHERE id = ?
+    `
+    let [registros] = await connection.query(comando, [id]);
+    return registros[0];
+  }
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM carros1
+       WHERE nome like ?
+    `
+    let [registros] = await connection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  export async function alterarCarro(id, novosDados) {
+    const comando = `
+      UPDATE carros1
+         SET valor = ?,
+         placa= ?,
+          modelo  = ?,
+          ano_fabricacao= ?,
+          cor = ?,
+          ar_condicionado = ?
+       WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [
+      novosDados.valor,
+      novosDados.placa,
+      novosDados.modelo,
+      novosDados.ano_fabricacao,
+      novosDados.cor,
+      novosDados.ar_condionado,
+      id
+    ])
+  }
+  export async function deletarCarros(id) {
+    const comando = `
+      DELETE FROM carros1
+            WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [id]);
+  }
 // Nona API
 export async function listarRoupas(registro) {
   const comando = 'SELECT * FROM roupas'
@@ -293,6 +471,62 @@ export async function inserirRoupa(novaRoupa) {
   let [roupinha] = await connection.query(comando, [novaRoupa.nm_roupa, novaRoupa.nm_marca, novaRoupa.bt_caro, novaRoupa.bt_duradoura, novaRoupa.preco_roupa, novaRoupa.pt_corpo, novaRoupa.dt_fabricacao])
   return roupinha
 }
+  export async function consultarRoupas(id) {
+    const comando = `
+      SELECT * 
+        FROM roupas
+       WHERE id = ?
+    `
+  
+    let [registros] = await connection.query(comando, [id]);
+    return registros[0];
+  }
+  
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM roupas
+       WHERE nome like ?
+    `
+  
+    let [registros] = await connection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  
+  export async function alterarRoupas(id, novosDados) {
+    const comando = `
+      UPDATE roupas
+         SET nm_roupa = ?,
+         nm_marca  = ?,
+          bt_caro  = ?,
+          bt_duradoura = ?,
+          preco_roupa  = ?,
+          pt_corpo  = ?,
+          dt_fabricacao = ?
+       WHERE id = ?
+    `
+  
+    let [info] = await connection.query(comando, [
+      novosDados.nm_roupa,
+      novosDados.nm_marca,
+      novosDados.bt_caro,
+      novosDados.bt_duradoura,
+      novosDados.preco_roupa,
+      novosDados.pt_corpo,
+      novosDados.dt_fabricacao,
+      id
+    ])
+  }
+  
+  
+  export async function deletarRoupas(id) {
+    const comando = `
+      DELETE FROM roupas
+            WHERE id = ?
+    `
+  
+    let [info] = await connection.query(comando, [id]);
+  }
 // Décima API
  export async function listarAnimes(registro) {
   const comando = 'SELECT * FROM animes'
@@ -348,186 +582,5 @@ export async function consultarAnimes(id) {
       DELETE FROM animes
             WHERE id = ?
     `
-    let [info] = await connection.query(comando, [id]);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
- export async function consultarFilmes(id) {
-  const comando = `
-    SELECT * 
-      FROM filmess
-     WHERE id = ?
-  `
-
-  let [registros] = await connection.query(comando, [id]);
-  return registros[0];
-}
-
-export async function filtrarPorNome(nome) {
-  const comando = `
-    SELECT * 
-      FROM filmess
-     WHERE nome like ?
-  `
-
-  let [registros] = await connection.query(comando, ['%'+nome+'%']);
-  return registros;
-}
-
-export async function alterarFilmes(id, novosDados) {
-  const comando = `
-    UPDATE filmess
-       SET titulo = ?,
-       ano_lancamento = ?,
-        genero = ?,
-        duracao_minutos = ?,
-        diretor = ?,
-        avaliacao = ?
-     WHERE id = ?
-  `
-
-  let [info] = await connection.query(comando, [
-    novosDados.titulo,
-    novosDados.ano_lancamento,
-    novosDados.genero,
-    novosDados.duracao_minutos,
-    novosDados.diretor,
-    novosDados.avaliacao,
-    id
-  ])
-}
-
-
-export async function deletarFilme(id) {
-  const comando = `
-    DELETE FROM Filmess
-          WHERE id = ?
-  `
-
-  let [info] = await connection.query(comando, [id]);
-}
-
-// segundooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-export async function consultarSeries(id) {
-    const comando = `
-      SELECT * 
-        FROM series
-       WHERE id = ?
-    `
-  
-    let [registros] = await connection.query(comando, [id]);
-    return registros[0];
-  }
-  
-  export async function filtrarPorNome(nome) {
-    const comando = `
-      SELECT * 
-        FROM series
-       WHERE nome like ?
-    `
-  
-    let [registros] = await connection.query(comando, ['%'+nome+'%']);
-    return registros;
-  }
-  
-  export async function alterarSeries(id, novosDados) {
-    const comando = `
-      UPDATE series
-         SET titulo = ?,
-         ano_lancamento = ?,
-          genero = ?,
-          temporadas = ?,
-          criador = ?,
-          avaliacao = ?
-       WHERE id = ?
-    `
-  
-    let [info] = await connection.query(comando, [
-      novosDados.titulo,
-      novosDados.ano_lancamento,
-      novosDados.genero,
-      novosDados.temporadas,
-      novosDados.criador,
-      novosDados.avaliacao,
-      id
-    ])
-  }
-  
-  
-  export async function deletarSeries(id) {
-    const comando = `
-      DELETE FROM series
-            WHERE id = ?
-    `
-  
-    let [info] = await connection.query(comando, [id]);
-  }
-
-  //terceirooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-  export async function consultarRoupas(id) {
-    const comando = `
-      SELECT * 
-        FROM roupas
-       WHERE id = ?
-    `
-  
-    let [registros] = await connection.query(comando, [id]);
-    return registros[0];
-  }
-  
-  export async function filtrarPorNome(nome) {
-    const comando = `
-      SELECT * 
-        FROM roupas
-       WHERE nome like ?
-    `
-  
-    let [registros] = await connection.query(comando, ['%'+nome+'%']);
-    return registros;
-  }
-  
-  export async function alterarRoupas(id, novosDados) {
-    const comando = `
-      UPDATE livros
-         SET nm_roupa = ?,
-         nm_marca  = ?,
-          bt_caro  = ?,
-          bt_duradoura = ?,
-          preco_roupa  = ?,
-          pt_corpo  = ?,
-          dt_fabricacao = ?
-       WHERE id = ?
-    `
-  
-    let [info] = await connection.query(comando, [
-      novosDados.nm_roupa,
-      novosDados.nm_marca,
-      novosDados.bt_caro,
-      novosDados.bt_duradoura,
-      novosDados.preco_roupa,
-      novosDados.pt_corpo,
-      novosDados.dt_fabricacao,
-      id
-    ])
-  }
-  
-  
-  export async function deletarRoupas(id) {
-    const comando = `
-      DELETE FROM roupas
-            WHERE id = ?
-    `
-  
     let [info] = await connection.query(comando, [id]);
   }
