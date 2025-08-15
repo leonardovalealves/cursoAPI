@@ -165,6 +165,28 @@ api.post ('/livros', async (req, resp) =>{
     novoId: id
   })
 })
+  api.get('/livros/filtrar', async (req, resp) => {
+    let nome = req.query.nome;
+    let registros = await filtrarPorNome(nome);
+    resp.send(registros);
+  })
+  api.get('/livros/:id', async (req, resp) => {
+    let id = req.params.id;
+    let registros = await consultarLivros(id);
+    resp.send(registros);
+  })
+  api.put('/livros/:id', async (req, resp) => {
+    let id = req.params.id;
+    let novosDados = req.body;
+  
+    await alterarLivro(id, novosDados);
+    resp.send();
+  })
+  api.delete('/livro/:id', async (req, resp) => {
+    let id = req.params.id;
+    await deletarLivro(id);
+    resp.send();
+  })
 // Oitava API 
 api.get ('/carros', async (req, resp)=> {
   let registros = await listarCarros()
@@ -201,4 +223,118 @@ api.post('/animes', async (req, resp)=>{
     novoId: id
   })
 })
+ api.get('/animes/filtrar', async (req, resp) => {
+    let nome = req.query.nome;
+    let registros = await filtrarPorNome(nome);
+    resp.send(registros);
+  })
+  
+  api.get('/animes/:id', async (req, resp) => {
+    let id = req.params.id;
+    let registros = await consultarAnimes(id);
+    resp.send(registros);
+  })
+  
+  api.put('/animes/:id', async (req, resp) => {
+    let id = req.params.id;
+    let novosDados = req.body;
+  
+    await alterarAnimes(id, novosDados);
+    resp.send();
+  })
+  api.delete('/animes/:id', async (req, resp) => {
+    let id = req.params.id;
+    await deletarAnimes(id);
+    resp.send();
+  })
+
+
+
+
+
+// aweqidjoiajda
+api.get('/filmes/filtrar', async (req, resp) => {
+  let nome = req.query.nome;
+  let registros = await filtrarPorNome(nome);
+  resp.send(registros);
+})
+api.get('/filmes/:id', async (req, resp) => {
+  let id = req.params.id;
+  let registros = await consultarFilmes(id);
+  resp.send(registros);
+})
+api.put('/filmes/:id', async (req, resp) => {
+  let id = req.params.id;
+  let novosDados = req.body;
+
+  await alterarFilmes(id, novosDados);
+  resp.send();
+})
+api.delete('/filmes/:id', async (req, resp) => {
+  let id = req.params.id;
+  await deletarFilme(id);
+  resp.send();
+})
+
+
+
+
+
+api.get('/series/filtrar', async (req, resp) => {
+    let nome = req.query.nome;
+    let registros = await filtrarPorNome(nome);
+    resp.send(registros);
+  })
+  api.get('/series/:id', async (req, resp) => {
+    let id = req.params.id;
+    let registros = await consultarSeries(id);
+    resp.send(registros);
+  })
+  
+  api.put('/series/:id', async (req, resp) => {
+    let id = req.params.id;
+    let novosDados = req.body;
+  
+    await alterarSeries(id, novosDados);
+    resp.send();
+  })
+  api.delete('/series/:id', async (req, resp) => {
+    let id = req.params.id;
+    await deletarSeries(id);
+    resp.send();
+  })
+
+
+
+
+
+  
+api.get('/roupas/filtrar', async (req, resp) => {
+    let nome = req.query.nome;
+    let registros = await filtrarPorNome(nome);
+    resp.send(registros);
+  })
+  api.get('/roupas/:id', async (req, resp) => {
+    let id = req.params.id;
+    let registros = await consultarRoupas(id);
+    resp.send(registros);
+  })
+  api.put('/roupas/:id', async (req, resp) => {
+    let id = req.params.id;
+    let novosDados = req.body;
+  
+    await alterarRoupas(id, novosDados);
+    resp.send();
+  })
+  api.delete('/roupas/:id', async (req, resp) => {
+    let id = req.params.id;
+    await deletarRoupas(id);
+    resp.send();
+  })
+
+
+
+
+
+
 api.listen(5010, () => console.log('..: API subiu com sucesso!'));

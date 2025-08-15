@@ -223,7 +223,53 @@ export async function listarLivro(registro) {
 export async function inserirLivro(novoLivro) {
   const comando = 'INSERT INTO livros (titulo, autor, ano_publicacao, genero, editora, preco) values (?,?,?,?,?,?)'
   let [livrinho] = await connection.query(comando, [novoLivro.titulo, novoLivro.autor, novoLivro.ano_publicacao, novoLivro.genero, novoLivro.editora, novoLivro.preco])
-  return livrinho
+  return livrinho;
+ export async function consultarLivros(id) {
+    const comando = `
+      SELECT * 
+        FROM livros
+       WHERE id = ?
+    `
+    let [registros] = await connection.query(comando, [id]);
+    return registros[0];
+  }
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM livros
+       WHERE nome like ?
+    `
+    let [registros] = await connection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  export async function alterarLivro(id, novosDados) {
+    const comando = `
+      UPDATE livros
+         SET titulo = ?,
+         autor = ?,
+          ano_publicacao  = ?,
+          genero = ?,
+          editora  = ?,
+          preco = ?
+       WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [
+      novosDados.titulo,
+      novosDados.autor,
+      novosDados.ano_publicacao,
+      novosDados.genero,
+      novosDados.editora,
+      novosDados.preco,
+      id
+    ])
+  }
+  export async function deletarLivro(id) {
+    const comando = `
+      DELETE FROM livros
+            WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [id]);
+  }
 }
 // Oitava API
 export async function listarCarros(registro) {
@@ -258,3 +304,230 @@ export async function inserirRoupa(novaRoupa) {
   let [animezinho] = await connection.query(comando, [novoAnime.nome, novoAnime.genero, novoAnime.episodios, novoAnime.ano_lancamento, novoAnime.estudio, novoAnime.avaliacao])
   return animezinho
  }
+export async function consultarAnimes(id) {
+    const comando = `
+      SELECT * 
+        FROM animes
+       WHERE id = ?
+    `
+    let [registros] = await conection.query(comando, [id]);
+    return registros[0];
+  }
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM animes
+       WHERE nome like ?
+    `
+    let [registros] = await conection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  export async function alterarAnimes(id, novosDados) {
+    const comando = `
+      UPDATE animes
+         SET nome = ?,
+          genero = ?,
+          episodios  = ?,
+          ano_lancamento = ?,
+          estudio  = ?,
+          avaliacao = ?
+       WHERE id = ?
+    `
+    let [info] = await conection.query(comando, [
+      novosDados.nome,
+      novosDados.genero,
+      novosDados.episodios,
+      novosDados.ano_lancamento,
+      novosDados.estudio,
+      novosDados.avaliacao,
+      id
+    ])
+  }
+  export async function deletarAnimes(id) {
+    const comando = `
+      DELETE FROM animes
+            WHERE id = ?
+    `
+    let [info] = await connection.query(comando, [id]);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+ export async function consultarFilmes(id) {
+  const comando = `
+    SELECT * 
+      FROM filmess
+     WHERE id = ?
+  `
+
+  let [registros] = await connection.query(comando, [id]);
+  return registros[0];
+}
+
+export async function filtrarPorNome(nome) {
+  const comando = `
+    SELECT * 
+      FROM filmess
+     WHERE nome like ?
+  `
+
+  let [registros] = await connection.query(comando, ['%'+nome+'%']);
+  return registros;
+}
+
+export async function alterarFilmes(id, novosDados) {
+  const comando = `
+    UPDATE filmess
+       SET titulo = ?,
+       ano_lancamento = ?,
+        genero = ?,
+        duracao_minutos = ?,
+        diretor = ?,
+        avaliacao = ?
+     WHERE id = ?
+  `
+
+  let [info] = await connection.query(comando, [
+    novosDados.titulo,
+    novosDados.ano_lancamento,
+    novosDados.genero,
+    novosDados.duracao_minutos,
+    novosDados.diretor,
+    novosDados.avaliacao,
+    id
+  ])
+}
+
+
+export async function deletarFilme(id) {
+  const comando = `
+    DELETE FROM Filmess
+          WHERE id = ?
+  `
+
+  let [info] = await connection.query(comando, [id]);
+}
+
+// segundooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+export async function consultarSeries(id) {
+    const comando = `
+      SELECT * 
+        FROM series
+       WHERE id = ?
+    `
+  
+    let [registros] = await connection.query(comando, [id]);
+    return registros[0];
+  }
+  
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM series
+       WHERE nome like ?
+    `
+  
+    let [registros] = await connection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  
+  export async function alterarSeries(id, novosDados) {
+    const comando = `
+      UPDATE series
+         SET titulo = ?,
+         ano_lancamento = ?,
+          genero = ?,
+          temporadas = ?,
+          criador = ?,
+          avaliacao = ?
+       WHERE id = ?
+    `
+  
+    let [info] = await connection.query(comando, [
+      novosDados.titulo,
+      novosDados.ano_lancamento,
+      novosDados.genero,
+      novosDados.temporadas,
+      novosDados.criador,
+      novosDados.avaliacao,
+      id
+    ])
+  }
+  
+  
+  export async function deletarSeries(id) {
+    const comando = `
+      DELETE FROM series
+            WHERE id = ?
+    `
+  
+    let [info] = await connection.query(comando, [id]);
+  }
+
+  //terceirooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+  export async function consultarRoupas(id) {
+    const comando = `
+      SELECT * 
+        FROM roupas
+       WHERE id = ?
+    `
+  
+    let [registros] = await connection.query(comando, [id]);
+    return registros[0];
+  }
+  
+  export async function filtrarPorNome(nome) {
+    const comando = `
+      SELECT * 
+        FROM roupas
+       WHERE nome like ?
+    `
+  
+    let [registros] = await connection.query(comando, ['%'+nome+'%']);
+    return registros;
+  }
+  
+  export async function alterarRoupas(id, novosDados) {
+    const comando = `
+      UPDATE livros
+         SET nm_roupa = ?,
+         nm_marca  = ?,
+          bt_caro  = ?,
+          bt_duradoura = ?,
+          preco_roupa  = ?,
+          pt_corpo  = ?,
+          dt_fabricacao = ?
+       WHERE id = ?
+    `
+  
+    let [info] = await connection.query(comando, [
+      novosDados.nm_roupa,
+      novosDados.nm_marca,
+      novosDados.bt_caro,
+      novosDados.bt_duradoura,
+      novosDados.preco_roupa,
+      novosDados.pt_corpo,
+      novosDados.dt_fabricacao,
+      id
+    ])
+  }
+  
+  
+  export async function deletarRoupas(id) {
+    const comando = `
+      DELETE FROM roupas
+            WHERE id = ?
+    `
+  
+    let [info] = await connection.query(comando, [id]);
+  }
